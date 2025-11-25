@@ -1,0 +1,33 @@
+version: '3.8'
+
+services:
+  microservicio-laboratorios:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: microservicio-laboratorios
+    ports:
+      - "9090:9090"
+    environment:
+      - SPRING_PROFILES_ACTIVE=prod
+      - DB_URL=jdbc:oracle:thin:@cryhzie2rbki7pdg_tp?TNS_ADMIN=/Wallet_CRYHZIE2RBKI7PDG
+      - DB_USERNAME=USER_DFSIII
+      - DB_PASSWORD=DUOC_ActSum_DFS3
+      - DDL_AUTO=update
+      - JAVA_OPTS=-Xmx512m -Xms256m
+    volumes:
+      #Montar el wallet de Oracle
+      - ./Wallet_CRYHZIE2RBKI7PDG:/Wallet_CRYHZIE2RBKI7PDG:ro
+    restart: unless-stopped
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:9090/actuator/health" ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    networks:
+      - laboratorios-network
+
+networks:
+  laboratorios-network:
+    driver: bridge
