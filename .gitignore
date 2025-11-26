@@ -32,7 +32,7 @@ build/
 ### VS Code ###
 .vscode/
 
-### Oracle Wallet (NUNCA subir a Git) ###
+### Oracle Wallet###
 Wallet_*/
 *.sso
 *.p12
@@ -41,5 +41,4 @@ sqlnet.ora
 ojdbc.properties
 
 ### Docker ###
-.dockerignore
 *.log
