@@ -1,10 +1,19 @@
 package com.microservicio_laboratorios.microservicio_laboratorios.controller;
+
 import com.microservicio_laboratorios.microservicio_laboratorios.model.Laboratorio;
 import com.microservicio_laboratorios.microservicio_laboratorios.service.LaboratorioService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import java.util.List;
 
 @RestController
@@ -14,19 +23,19 @@ public class LaboratorioController {
 
     private final LaboratorioService laboratorioService;
 
-    //Obtener todos los laboratorios
+    // Obtener todos los laboratorios
     @GetMapping
     public ResponseEntity<List<Laboratorio>> listar() {
         return ResponseEntity.ok(laboratorioService.listarTodos());
     }
 
-    //Obtener mediante id
+    // Obtener mediante id
     @GetMapping("/{id}")
     public ResponseEntity<Laboratorio> obtener(@PathVariable Long id) {
         return ResponseEntity.ok(laboratorioService.obtenerPorId(id));
     }
 
-    //Buscar mediante el tipo
+    // Buscar mediante el tipo
     @GetMapping("/buscar")
     public ResponseEntity<List<Laboratorio>> buscarPorTipo(@RequestParam(required = false) String tipo) {
         if (tipo == null || tipo.isBlank()) {
@@ -35,19 +44,19 @@ public class LaboratorioController {
         return ResponseEntity.ok(laboratorioService.buscarPorTipo(tipo));
     }
 
-    //Crear un laboratorio
+    // Crear un laboratorio
     @PostMapping
     public ResponseEntity<Laboratorio> crear(@Valid @RequestBody Laboratorio laboratorio) {
         return ResponseEntity.status(201).body(laboratorioService.crear(laboratorio));
     }
 
-    //Actualizar un laboratorio
+    // Actualizar un laboratorio
     @PutMapping("/{id}")
     public ResponseEntity<Laboratorio> actualizar(@PathVariable Long id, @Valid @RequestBody Laboratorio laboratorio) {
         return ResponseEntity.ok(laboratorioService.actualizar(id, laboratorio));
     }
 
-    //Eliminar laboratorio
+    // Eliminar laboratorio
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> eliminar(@PathVariable Long id) {
         laboratorioService.eliminar(id);

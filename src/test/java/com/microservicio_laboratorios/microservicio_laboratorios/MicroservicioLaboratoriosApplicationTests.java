@@ -10,4 +10,9 @@ class MicroservicioLaboratoriosApplicationTests {
 	void contextLoads() {
 	}
 
+	@Test
+	void main() {
+		MicroservicioLaboratoriosApplication.main(new String[] { "--server.port=0" });
+	}
+
 }

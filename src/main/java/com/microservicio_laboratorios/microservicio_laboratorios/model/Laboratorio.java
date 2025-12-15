@@ -1,4 +1,5 @@
 package com.microservicio_laboratorios.microservicio_laboratorios.model;
+
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.*;
@@ -11,7 +12,7 @@ import lombok.*;
 @Builder
 public class Laboratorio {
 
-    //Creación de campos de la entidad y sus validaciones
+    // Creación de campos de la entidad y sus validaciones
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -35,4 +36,11 @@ public class Laboratorio {
     @NotBlank(message = "Tipo de análisis es obligatorio")
     @Column(nullable = false, length = 50)
     private String tipoAnalisis;
+
+    @Column(length = 500)
+    private String descripcion;
+
+    private String ubicacion;
+
+    private String imagen;
 }

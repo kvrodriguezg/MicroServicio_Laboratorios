@@ -1,10 +1,12 @@
 package com.microservicio_laboratorios.microservicio_laboratorios.exception;
+
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -36,6 +38,14 @@ public class GlobalExceptionHandler {
         ErrorDetails error = new ErrorDetails(LocalDateTime.now(), "Validación fallida", errores.toString());
         log.warn("Validation errors: {}", errores);
         return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(org.springframework.web.servlet.resource.NoResourceFoundException.class)
+    public ResponseEntity<ErrorDetails> handleNoResourceFound(
+            org.springframework.web.servlet.resource.NoResourceFoundException ex) {
+        ErrorDetails error = new ErrorDetails(LocalDateTime.now(), "Ruta no encontrada", ex.getMessage());
+        log.warn("NoResourceFound: {}", ex.getMessage());
+        return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(Exception.class)

@@ -1,4 +1,5 @@
 package com.microservicio_laboratorios.microservicio_laboratorios.service;
+
 import com.microservicio_laboratorios.microservicio_laboratorios.exception.BadRequestException;
 import com.microservicio_laboratorios.microservicio_laboratorios.exception.ResourceNotFoundException;
 import com.microservicio_laboratorios.microservicio_laboratorios.model.Laboratorio;
@@ -16,13 +17,13 @@ public class LaboratorioService {
 
     private final LaboratorioRepository laboratorioRepository;
 
-    //Listar todos los laboratorios
+    // Listar todos los laboratorios
     public List<Laboratorio> listarTodos() {
         log.info("Obteniendo todos los laboratorios");
         return laboratorioRepository.findAll();
     }
 
-    //Buscar laboratorios por tipo de análisis
+    // Buscar laboratorios por tipo de análisis
     public List<Laboratorio> buscarPorTipo(String tipoAnalisis) {
         log.info("Buscando laboratorios por tipo de análisis: {}", tipoAnalisis);
         List<Laboratorio> resultados = laboratorioRepository.findByTipoAnalisis(tipoAnalisis);
@@ -35,30 +36,32 @@ public class LaboratorioService {
         return resultados;
     }
 
-    //Obtener laboratorio por ID con excepción
+    // Obtener laboratorio por ID con excepción
     public Laboratorio obtenerPorId(Long id) {
         log.info("Buscando laboratorio con ID {}", id);
         return laboratorioRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Laboratorio no encontrado con id: " + id));
     }
 
-    //Crear nuevo laboratorio
+    // Crear nuevo laboratorio
     public Laboratorio crear(Laboratorio laboratorio) {
         log.info("Creando laboratorio con nombre: {}", laboratorio.getNombre());
 
-        if (laboratorio.getId() != null && laboratorioRepository.existsById(laboratorio.getId())) {
+        Long id = laboratorio.getId();
+        if (id != null && laboratorioRepository.existsById(id)) {
             throw new BadRequestException("Ya existe un laboratorio con el ID especificado");
         }
 
         return laboratorioRepository.save(laboratorio);
     }
 
-    //Actualizar laboratorio existente
+    // Actualizar laboratorio existente
     public Laboratorio actualizar(Long id, Laboratorio laboratorioActualizado) {
         log.info("Actualizando laboratorio con id {}", id);
 
         Laboratorio laboratorioExistente = laboratorioRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("No se puede actualizar. Laboratorio no encontrado con id: " + id));
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "No se puede actualizar. Laboratorio no encontrado con id: " + id));
 
         laboratorioExistente.setNombre(laboratorioActualizado.getNombre());
         laboratorioExistente.setCapacidad(laboratorioActualizado.getCapacidad());
@@ -68,12 +71,13 @@ public class LaboratorioService {
         return laboratorioRepository.save(laboratorioExistente);
     }
 
-    //Eliminar laboratorio
+    // Eliminar laboratorio
     public void eliminar(Long id) {
         log.info("Eliminando laboratorio con id {}", id);
 
         Laboratorio laboratorio = laboratorioRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("No se puede eliminar. Laboratorio no encontrado con id: " + id));
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "No se puede eliminar. Laboratorio no encontrado con id: " + id));
 
         laboratorioRepository.delete(laboratorio);
         log.info("Laboratorio con id {} eliminado correctamente", id);
