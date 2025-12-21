@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
-//Clase para manejo globlal de las excepciones
+
 @Slf4j
 @ControllerAdvice
 public class GlobalExceptionHandler {

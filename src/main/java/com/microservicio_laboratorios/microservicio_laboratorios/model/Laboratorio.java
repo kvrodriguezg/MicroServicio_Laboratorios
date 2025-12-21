@@ -12,7 +12,7 @@ import lombok.*;
 @Builder
 public class Laboratorio {
 
-    // Creación de campos de la entidad y sus validaciones
+    
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -37,9 +37,11 @@ public class Laboratorio {
     @Column(nullable = false, length = 50)
     private String tipoAnalisis;
 
+    @NotBlank(message = "La descripción es obligatoria")
     @Column(length = 500)
     private String descripcion;
 
+    @NotBlank(message = "La ubicación es obligatoria")
     private String ubicacion;
 
     private String imagen;

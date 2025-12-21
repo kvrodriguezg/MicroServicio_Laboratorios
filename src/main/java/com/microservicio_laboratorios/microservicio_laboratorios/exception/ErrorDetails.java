@@ -1,7 +1,7 @@
 package com.microservicio_laboratorios.microservicio_laboratorios.exception;
 import java.time.LocalDateTime;
 
-//Excepción con detalles del error
+
 public class ErrorDetails {
     private LocalDateTime timestamp;
     private String mensaje;

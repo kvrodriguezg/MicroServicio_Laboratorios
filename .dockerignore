@@ -1,11 +1,24 @@
 .git
 .gitignore
+
+# Ignorar build outputs pero permitir JARs necesarios para la imagen
+**/target/*
+!**/target/*.jar
+
+# Directorios de proyecto y metadatos
 .mvn
 *.md
 .vscode
 .idea
 *.iml
+
+# Dependencias y caches
 node_modules
+
+# Logs y sistema
 *.log
 .DS_Store
 Thumbs.db
+
+# No ignorar la carpeta Wallet usada por el Dockerfile
+!Wallet_CRYHZIE2RBKI7PDG/

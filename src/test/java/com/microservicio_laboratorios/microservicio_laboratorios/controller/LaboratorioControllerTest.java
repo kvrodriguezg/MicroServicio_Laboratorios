@@ -33,7 +33,6 @@ class LaboratorioControllerTest {
 
     private Laboratorio laboratorio;
 
-    // Antes de cada test
     @BeforeEach
     void setUp() {
         laboratorio = Laboratorio.builder()
@@ -42,6 +41,8 @@ class LaboratorioControllerTest {
                 .capacidad(20)
                 .estado("ACTIVO")
                 .tipoAnalisis("Microbiología")
+                .descripcion("Descripción de prueba")
+                .ubicacion("Ubicación de prueba")
                 .build();
     }
 
@@ -88,6 +89,30 @@ class LaboratorioControllerTest {
                 .andExpect(jsonPath("$.size()").value(1));
 
         verify(laboratorioService, times(1)).listarTodos();
+    }
+
+    @Test
+    void buscarPorTipo_RetornarTodos_CuandoTipoEsBlanco() throws Exception {
+        when(laboratorioService.listarTodos()).thenReturn(Arrays.asList(laboratorio));
+
+        mockMvc.perform(get("/api/laboratorios/buscar").param("tipo", "   "))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.size()").value(1));
+
+        verify(laboratorioService, times(1)).listarTodos();
+        verify(laboratorioService, never()).buscarPorTipo(any());
+    }
+
+    @Test
+    void buscarPorTipo_RetornarTodos_CuandoTipoEsVacio() throws Exception {
+        when(laboratorioService.listarTodos()).thenReturn(Arrays.asList(laboratorio));
+
+        mockMvc.perform(get("/api/laboratorios/buscar").param("tipo", ""))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.size()").value(1));
+
+        verify(laboratorioService, times(1)).listarTodos();
+        verify(laboratorioService, never()).buscarPorTipo(any());
     }
 
     @Test

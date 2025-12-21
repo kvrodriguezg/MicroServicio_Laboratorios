@@ -3,7 +3,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import com.microservicio_laboratorios.microservicio_laboratorios.model.Laboratorio;
 import java.util.List;
 
-//Repositorio desde JPA
+
 public interface LaboratorioRepository extends JpaRepository<Laboratorio, Long> {
     List<Laboratorio> findByTipoAnalisis(String tipoAnalisis);
 }

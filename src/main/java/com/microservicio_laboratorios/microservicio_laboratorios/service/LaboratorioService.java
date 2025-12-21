@@ -17,13 +17,13 @@ public class LaboratorioService {
 
     private final LaboratorioRepository laboratorioRepository;
 
-    // Listar todos los laboratorios
+    
     public List<Laboratorio> listarTodos() {
         log.info("Obteniendo todos los laboratorios");
         return laboratorioRepository.findAll();
     }
 
-    // Buscar laboratorios por tipo de análisis
+    
     public List<Laboratorio> buscarPorTipo(String tipoAnalisis) {
         log.info("Buscando laboratorios por tipo de análisis: {}", tipoAnalisis);
         List<Laboratorio> resultados = laboratorioRepository.findByTipoAnalisis(tipoAnalisis);
@@ -36,14 +36,14 @@ public class LaboratorioService {
         return resultados;
     }
 
-    // Obtener laboratorio por ID con excepción
+    
     public Laboratorio obtenerPorId(Long id) {
         log.info("Buscando laboratorio con ID {}", id);
         return laboratorioRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Laboratorio no encontrado con id: " + id));
     }
 
-    // Crear nuevo laboratorio
+    
     public Laboratorio crear(Laboratorio laboratorio) {
         log.info("Creando laboratorio con nombre: {}", laboratorio.getNombre());
 
@@ -51,11 +51,32 @@ public class LaboratorioService {
         if (id != null && laboratorioRepository.existsById(id)) {
             throw new BadRequestException("Ya existe un laboratorio con el ID especificado");
         }
+        laboratorio.setId(null); 
+
+        
+        laboratorio.setImagen(obtenerImagenPorTipo(laboratorio.getTipoAnalisis()));
 
         return laboratorioRepository.save(laboratorio);
     }
 
-    // Actualizar laboratorio existente
+    private String obtenerImagenPorTipo(String tipo) {
+        if (tipo == null)
+            return "assets/img/lab_clinico.png";
+        switch (tipo.toLowerCase()) {
+            case "clinico":
+                return "assets/img/lab_clinico.png";
+            case "investigacion":
+                return "assets/img/lab_investigacion.png";
+            case "educativo":
+                return "assets/img/lab_educativo.png";
+            case "industrial":
+                return "assets/img/lab_industrial.png";
+            default:
+                return "assets/img/lab_clinico.png";
+        }
+    }
+
+    
     public Laboratorio actualizar(Long id, Laboratorio laboratorioActualizado) {
         log.info("Actualizando laboratorio con id {}", id);
 
@@ -67,11 +88,16 @@ public class LaboratorioService {
         laboratorioExistente.setCapacidad(laboratorioActualizado.getCapacidad());
         laboratorioExistente.setEstado(laboratorioActualizado.getEstado());
         laboratorioExistente.setTipoAnalisis(laboratorioActualizado.getTipoAnalisis());
+        laboratorioExistente.setDescripcion(laboratorioActualizado.getDescripcion());
+        laboratorioExistente.setUbicacion(laboratorioActualizado.getUbicacion());
+
+        
+        laboratorioExistente.setImagen(obtenerImagenPorTipo(laboratorioActualizado.getTipoAnalisis()));
 
         return laboratorioRepository.save(laboratorioExistente);
     }
 
-    // Eliminar laboratorio
+    
     public void eliminar(Long id) {
         log.info("Eliminando laboratorio con id {}", id);
 

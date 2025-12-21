@@ -9,4 +9,4 @@ COPY Wallet_CRYHZIE2RBKI7PDG /app/Wallet_CRYHZIE2RBKI7PDG
 
 #Puerto
 EXPOSE 9091
-ENTRYPOINT ["java", "-Dspring.profiles.active=docker", "-jar", "app.jar"]
+ENTRYPOINT ["java", "-Dspring.profiles.active=docker", "-Dserver.port=9091", "-jar", "app.jar"]
